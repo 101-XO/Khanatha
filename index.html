@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#101612" name="theme-color"/>
+<meta content="KHANATHA (خناثة) — bilingual Arabic and English WARDOGS L81 mortar / SPH-2 artillery calculator, created by H1SoK4." name="description"/>
+<title>KHANATHA | خناثة — WARDOGS Mortar Calculator</title>
+<style>
+    :root { color-scheme: dark; --bg:#0e1310; --panel:#151c17; --panel2:#1c251e; --line:#344337; --lineSoft:#28362c; --text:#e8ebde; --muted:#a1aa98; --low:#75836f; --lime:#d5fb80; --amber:#ffce76; --red:#ff8173; --accent:#d5fb80; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace; --sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+    *,*::before,*::after {box-sizing:border-box}
+    html{min-height:100%;scroll-behavior:smooth}
+    body{margin:0;min-width:320px;color:var(--text);font-family:var(--sans);background:radial-gradient(ellipse at 76% 0%,#203126 0%,transparent 37%),linear-gradient(180deg,#101612 0%,var(--bg) 75%);}
+    button,input,select{font:inherit} button{cursor:pointer}
+    button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+    button:disabled{opacity:.45;cursor:not-allowed}
+    .shell{max-width:1290px;margin:0 auto;padding:0 28px 42px}
+    .topbar{min-height:84px;border-bottom:1px solid var(--lineSoft);display:flex;justify-content:space-between;align-items:center;gap:15px}
+    .identity{display:flex;gap:13px;align-items:center}
+    .logo{width:42px;height:42px;border:1px solid var(--lime);display:grid;place-items:center;color:var(--lime);font-size:28px;line-height:1;background:#202d1d}
+    .brandline{font-family:var(--mono);font-size:16px;letter-spacing:.12em;font-weight:800}.brandsub{margin-top:5px;color:var(--muted);font:11px var(--mono);letter-spacing:.11em}
+    .meta{color:var(--muted);font:11px var(--mono);letter-spacing:.11em;display:flex;align-items:center;gap:15px}
+    .light{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 13px #b4df6280}
+    .hero{padding:47px 0 30px;display:flex;justify-content:space-between;align-items:end;gap:20px}
+    .eyebrow,.kicker{font:12px var(--mono);font-weight:600;letter-spacing:.15em;color:var(--lime)}
+    h1{font-weight:850;letter-spacing:-.055em;line-height:1.03;margin:13px 0 13px;font-size:clamp(34px,5.2vw,60px)}
+    .hero p{max-width:680px;color:var(--muted);font-size:14px;line-height:1.7;margin:0}
+    .tag{font:11px var(--mono);color:var(--lime);white-space:nowrap;border:1px solid #5a7546;padding:10px 13px;background:#1e2b1d}
+    .dashboard{display:grid;grid-template-columns:minmax(345px,.92fr) minmax(480px,1.35fr);gap:18px;align-items:start}
+    .left,.right{display:grid;gap:18px;min-width:0}
+    .panel{background:linear-gradient(145deg,#19211b,#141b16);border:1px solid var(--line);box-shadow:0 15px 40px #00000021;min-width:0}
+    .panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:18px 22px;border-bottom:1px solid var(--lineSoft)}
+    .panel-title{font:12px var(--mono);font-weight:750;letter-spacing:.1em;color:#dde4d4}
+    .small-id{color:#7e9080;font:11px var(--mono)}
+    .pad{padding:22px}
+    .label{display:block;font:11px var(--mono);letter-spacing:.1em;color:#b7c3ad;margin:0 0 9px}
+    .weapon-tabs{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
+    .weapon{min-width:0;border:1px solid #3f5041;text-align:left;border-radius:3px;background:#121813;padding:15px 13px;color:var(--text);transition:.16s}
+    .weapon strong{display:block;font:750 17px var(--mono);margin-bottom:6px}
+    .weapon span{display:block;font:10px var(--mono);color:var(--muted);line-height:1.4}
+    .weapon[aria-pressed="true"]{background:#2a3a24;border-color:var(--lime);box-shadow:inset 3px 0 var(--lime)}
+    .weapon[aria-pressed="true"] strong{color:var(--lime)}
+    .range-note{display:flex;align-items:center;gap:8px;justify-content:space-between;background:#202a20;border:1px dashed #496046;padding:12px 13px;font:11px var(--mono);color:var(--muted);margin-bottom:3px}
+    .range-note b{color:#e3f6bd;font-weight:650}
+    .coordblock{margin-top:27px}
+    .section-label{font:11px var(--mono);letter-spacing:.14em;display:flex;align-items:center;gap:9px;margin-bottom:13px;color:#e0e7d8}
+    .index{height:25px;width:25px;display:grid;place-items:center;border:1px solid #57734a;color:var(--lime);background:#233122;font-weight:bold}
+    .index.target{border-color:#bd8350;color:var(--amber);background:#3a291f}
+    .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .field label{display:block;font:10px var(--mono);color:var(--muted);letter-spacing:.1em;margin-bottom:7px}
+    .inputwrap{position:relative}
+    .inputwrap input{width:100%;height:55px;padding:12px 40px 12px 14px;border:1px solid #465648;border-radius:2px;background:#0d140e;color:#f0f6e9;font:19px var(--mono);transition:border-color .15s;appearance:textfield}
+    .inputwrap input::placeholder{color:#637263}
+    .inputwrap input:focus{border-color:var(--lime);outline:0}
+    .inputwrap span{position:absolute;right:13px;top:20px;color:#849482;font:11px var(--mono);pointer-events:none}
+    input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+    .controls{display:flex;flex-wrap:wrap;gap:9px;margin-top:23px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:41px;border-radius:2px;border:1px solid #425542;padding:10px 14px;background:#212b22;color:#e3eadc;font:11px var(--mono);font-weight:750;letter-spacing:.045em;transition:background .15s,border-color .15s}
+    .btn:hover{background:#304030;border-color:#899a79}
+    .btn.primary{background:var(--lime);color:#17200f;border-color:var(--lime)}
+    .btn.primary:hover{background:#e7ffaf}
+    .btn.clear{margin-left:auto;color:#e1a99f}
+    .muted-note{font:11px var(--mono);line-height:1.65;color:var(--muted);margin:13px 0 0}
+    .result-top{padding:22px 26px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+    .status{font:11px var(--mono);font-weight:750;letter-spacing:.09em;padding:8px 11px;border:1px solid #5c8055;background:#223422;color:var(--lime)}
+    .status.waiting{color:#adbaaa;background:#212923;border-color:#405542}
+    .status.invalid{color:var(--red);background:#372321;border-color:#86504b}
+    .solution-hint{font:11px var(--mono);color:var(--muted)}
+    .resultgrid{padding:10px 26px 24px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .readout{position:relative;background:#0f1711;border:1px solid #344336;padding:18px 17px 16px;min-height:148px}
+    .readout.main{background:#26331e;border-color:#536a3a}
+    .readoutlabel{font:11px var(--mono);letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:20px}
+    .readout.main .readoutlabel{color:#bad096}
+    .reading{font:750 clamp(27px,3.8vw,49px) var(--mono);letter-spacing:-.055em;white-space:nowrap;color:var(--text)}
+    .readout.main .reading{color:var(--lime)}
+    .reading .unit{font:14px var(--mono);color:#aeba9e;letter-spacing:0;margin-left:6px}
+    .detail{margin-top:9px;font:11px var(--mono);color:#9da99a}
+    .arcbar{border-top:1px solid var(--lineSoft);padding:21px 26px 22px}
+    .arc-heading{display:flex;justify-content:space-between;gap:5px;align-items:center;margin-bottom:12px;font:11px var(--mono);color:#d4e0c9}
+    .arc-heading span:last-child{color:var(--muted)}
+    .arc-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .arc{padding:14px 15px;text-align:left;border:1px solid #3e5141;background:#131b16;color:var(--text);min-height:87px;border-radius:2px}
+    .arc[aria-pressed="true"]{border-color:var(--lime);background:#2b3926}
+    .arc:disabled{opacity:.5}
+    .arc .arc-title{display:block;font:10px var(--mono);color:var(--muted);margin-bottom:9px;text-transform:uppercase;letter-spacing:.1em}
+    .arc .arc-num{font:700 23px var(--mono);color:#e1e9d8}
+    .arc[aria-pressed="true"] .arc-num{color:var(--lime)}
+    .meter{height:7px;border:1px solid #415742;background:#111812;overflow:hidden;margin-top:19px}
+    .meter > div{height:100%;width:0%;background:linear-gradient(90deg,#76974b,var(--lime));transition:width .25s}
+    .meter-legend{display:flex;justify-content:space-between;margin-top:8px;font:10px var(--mono);color:var(--muted)}
+    .warnings{margin:0 26px 24px;padding:11px 13px;background:#2a291c;color:#e6ca8c;font:11px/1.6 var(--mono);border-left:2px solid #b4975d}
+    .warnings.error{background:#34221e;color:#ffae9f;border-left-color:var(--red)}
+    .actions{padding:0 26px 24px;display:flex;gap:9px;flex-wrap:wrap}
+    .plot{padding:12px 21px 16px}
+    .plot canvas{display:block;width:100%;height:280px;background:#0f1811;border:1px solid #344638;touch-action:none}
+    .plot-caption{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font:10px var(--mono);color:var(--muted);margin-top:12px;line-height:1.5}
+    .plot-caption b{font-weight:650;color:#d4e8be}
+    .information{padding:18px 23px 20px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .info-item .info-title{display:block;font:10px var(--mono);letter-spacing:.12em;color:var(--lime);margin-bottom:7px}
+    .info-item p{margin:0;font:12px/1.65 var(--sans);color:#a7b3a2}
+    footer{border-top:1px solid var(--lineSoft);padding-top:23px;margin-top:28px;display:flex;justify-content:space-between;gap:20px;font:10px/1.7 var(--mono);color:#839081}
+    a{color:#c9e9a1;text-decoration:none}a:hover{text-decoration:underline}
+    .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+    .toast{position:fixed;right:24px;bottom:24px;padding:14px 18px;background:#d5fb80;color:#182111;font:12px var(--mono);font-weight:bold;box-shadow:0 8px 25px #0005;z-index:30;opacity:0;transform:translateY(15px);transition:opacity .2s,transform .2s;pointer-events:none}
+    .toast.show{opacity:1;transform:translateY(0)}
+    @media (max-width:930px){.dashboard{grid-template-columns:1fr}.hero{padding-top:35px}.shell{max-width:750px}.plot canvas{height:300px}}
+    @media (max-width:530px){.shell{padding:0 15px 28px}.topbar{min-height:74px}.brandline{font-size:14px}.meta{font-size:10px;gap:7px}.meta .hide-mobile{display:none}.hero{padding:32px 0 24px;display:block}.hero p{font-size:13px}.tag{display:inline-block;margin-top:20px}.pad{padding:18px}.panel-head{padding:17px 18px}.weapon strong{font-size:15px}.weapon{padding:12px 10px}.weapon span{font-size:9px}.readout{padding:15px 11px;min-height:133px}.resultgrid{padding:10px 15px 19px;gap:8px}.reading{font-size:clamp(25px,8vw,37px)}.reading .unit{font-size:11px;margin-left:2px}.readoutlabel{font-size:10px}.detail{font-size:10px}.result-top{padding:19px 16px 10px}.arcbar{padding:18px 15px}.warnings{margin:0 15px 20px}.actions{padding:0 15px 20px}.plot{padding:10px 13px 15px}.plot canvas{height:252px}.information{grid-template-columns:1fr}.controls .btn{flex:1}.btn.clear{margin-left:0}footer{display:block}footer div+div{margin-top:9px}}
+  
+/* KHANATHA language switch and RTL refinements */
+.head-actions{display:flex;align-items:center;gap:21px;flex-wrap:wrap;justify-content:flex-end}
+.maker-top{font:10px var(--mono);letter-spacing:.05em;color:var(--muted);white-space:nowrap}
+.maker-top b,.hero-maker strong,.footer-author strong{color:var(--lime);font-weight:800;letter-spacing:.035em}
+.language-switch{display:flex;align-items:center;padding:3px;background:#0c130e;border:1px solid #466040;border-radius:6px;gap:3px;direction:ltr}
+.language-switch button{background:none;border:1px solid transparent;border-radius:4px;color:#a7baa4;min-height:34px;padding:6px 12px;font-size:12px;font-weight:700;white-space:nowrap}
+.language-switch button[aria-pressed="true"]{background:#d5fb80;color:#17200f}
+.brand-arabic{font-family:Tahoma,"Segoe UI",Arial,sans-serif;color:var(--lime);letter-spacing:0;font-size:17px;font-weight:750}
+.hero-accent{color:var(--lime)}
+.hero-maker{display:flex;align-items:center;gap:9px;margin-top:22px;font-size:11px;letter-spacing:.06em;color:#b9c5b2}
+.hero-maker .light{width:6px;height:6px;flex:none}
+.section-suffix{color:#8da48a;font-size:10px}
+.footer-brand{margin-bottom:6px}.footer-brand strong{font-size:14px;color:#d8f1b0}.footer-brand strong span{font:700 12px var(--mono)}
+.footer-author{max-width:560px;text-align:end}.footer-author .credit-break{margin:0 7px}
+html[dir="rtl"] body{font-family:Tahoma,"Segoe UI",Arial,sans-serif}
+html[dir="rtl"] .hero h1{letter-spacing:0;line-height:1.25}
+html[dir="rtl"] .hero p{line-height:2}
+html[dir="rtl"] .eyebrow,html[dir="rtl"] .panel-title,html[dir="rtl"] .small-id,html[dir="rtl"] .section-label,html[dir="rtl"] .label,html[dir="rtl"] .readoutlabel,html[dir="rtl"] .detail,html[dir="rtl"] .info-item .info-title,html[dir="rtl"] .info-item p,html[dir="rtl"] .muted-note,html[dir="rtl"] .solution-hint,html[dir="rtl"] .arc-heading,html[dir="rtl"] .arc-title,html[dir="rtl"] .status,html[dir="rtl"] .tag,html[dir="rtl"] .btn,html[dir="rtl"] .warnings,html[dir="rtl"] .footer-author,html[dir="rtl"] .range-note,html[dir="rtl"] .hero-maker{font-family:Tahoma,"Segoe UI",Arial,sans-serif;letter-spacing:0}
+html[dir="rtl"] .section-label{line-height:1.7}
+html[dir="rtl"] .btn.clear{margin-left:0;margin-right:auto}
+html[dir="rtl"] .weapon{text-align:right}
+html[dir="rtl"] .weapon[aria-pressed="true"]{box-shadow:inset -3px 0 var(--lime)}
+html[dir="rtl"] .inputwrap input{direction:ltr;text-align:left;padding:12px 40px 12px 14px}
+html[dir="rtl"] .inputwrap span{right:13px;left:auto}
+html[dir="rtl"] .readout .reading,html[dir="rtl"] .readout .detail,html[dir="rtl"] .arc-num,html[dir="rtl"] .meter-legend,html[dir="rtl"] #delta{direction:ltr;unicode-bidi:isolate;text-align:left}
+html[dir="rtl"] .readoutlabel{line-height:1.5;min-height:27px}
+html[dir="rtl"] .warnings{border-left:0;border-right:2px solid #b4975d;line-height:1.95}
+html[dir="rtl"] .warnings.error{border-right-color:var(--red)}
+html[dir="rtl"] .toast{right:auto;left:24px}
+html[dir="rtl"] .info-item p{line-height:1.9}
+html[dir="rtl"] .footer-author{text-align:left}
+@media(max-width:750px){.maker-top{display:none}.topbar{flex-wrap:wrap;padding:13px 0}.head-actions{margin-inline-start:auto}}
+@media(max-width:530px){.head-actions{gap:5px}.language-switch button{font-size:11px;padding:5px 8px;min-height:30px}.brandline{font-size:11px;letter-spacing:0}.brand-arabic{font-size:13px}.brandsub{font-size:8px;letter-spacing:0}.identity{gap:8px}.logo{width:34px;height:34px}.hero-maker{font-size:10px}.footer-author{text-align:start!important}.readoutlabel{min-height:29px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="topbar">
+<div class="identity"><div aria-hidden="true" class="logo">⊕</div>
+<div><div class="brandline"><span class="brand-latin">KHANATHA</span> <span class="brand-arabic">/ خناثة</span></div><div class="brandsub" data-i18n="brandSubtitle">WARDOGS FIRE DIRECTION</div></div></div>
+<div class="head-actions">
+<span class="maker-top"><span data-i18n="creatorTop">CREATED BY</span> <b>H1SoK4</b></span>
+<div aria-label="Language / اللغة" class="language-switch" role="group"><button aria-pressed="false" id="langAr" lang="ar" type="button">العربية</button><button aria-pressed="true" id="langEn" lang="en" type="button">English</button></div>
+</div>
+</header>
+<div class="hero"><div>
+<div class="eyebrow" data-i18n="eyebrow">/ / WARDOGS COMMUNITY TOOL</div>
+<h1><span data-i18n="heroTitle">KHANATHA.</span><br/><span class="hero-accent" data-i18n="heroAccent">Aim. Calculate. Fire.</span></h1>
+<p data-i18n="heroDescription">A fast WARDOGS mortar and artillery calculator. Enter the firing position and target coordinates for instant distance, compass bearing and elevation in MIL.</p>
+<div class="hero-maker"><span class="light"></span><span data-i18n="madeBy">DESIGNED &amp; DEVELOPED BY</span><strong>H1SoK4</strong></div>
+</div><div class="tag" data-i18n="gridUnit">1 GRID UNIT = 100 M</div></div>
+<main class="dashboard">
+<section aria-label="Firing coordinates and settings" class="left" data-i18n-aria="leftAria">
+<div class="panel">
+<div class="panel-head"><span class="panel-title">01   <span data-i18n="weaponSystem">WEAPON SYSTEM</span></span><span class="small-id" data-i18n="selectPlatform">SELECT PLATFORM</span></div>
+<div class="pad">
+<div aria-label="Weapon" class="weapon-tabs" data-i18n-aria="weaponAria" role="group">
+<button aria-pressed="true" class="weapon" id="weaponL81" type="button"><strong>L81</strong><span data-i18n="mortar81">81MM / MORTAR</span></button>
+<button aria-pressed="false" class="weapon" id="weaponSPH" type="button"><strong>SPH-2</strong><span data-i18n="artillery155">155MM / ARTILLERY</span></button>
+</div>
+<div class="range-note"><span data-i18n="effectiveRange">EFFECTIVE TABLE RANGE</span><b id="rangeText">132–684 M</b></div>
+<div class="coordblock">
+<div class="section-label"><span class="index">01</span> <span data-i18n="firingPosition">FIRING POSITION</span> <span class="section-suffix" data-i18n="gunSuffix">/ GUN</span></div>
+<div class="fields">
+<div class="field"><label data-i18n="coordX" for="gunX">X COORDINATE</label><div class="inputwrap"><input autocomplete="off" id="gunX" inputmode="decimal" placeholder="80.00" step="any" type="number"/><span>X</span></div></div>
+<div class="field"><label data-i18n="coordY" for="gunY">Y COORDINATE</label><div class="inputwrap"><input autocomplete="off" id="gunY" inputmode="decimal" placeholder="80.00" step="any" type="number"/><span>Y</span></div></div>
+</div>
+</div>
+<div class="coordblock">
+<div class="section-label"><span class="index target">02</span> <span data-i18n="targetPosition">TARGET POSITION</span> <span class="section-suffix" data-i18n="impactSuffix">/ IMPACT</span></div>
+<div class="fields">
+<div class="field"><label data-i18n="coordX" for="targetX">X COORDINATE</label><div class="inputwrap"><input autocomplete="off" id="targetX" inputmode="decimal" placeholder="83.60" step="any" type="number"/><span>X</span></div></div>
+<div class="field"><label data-i18n="coordY" for="targetY">Y COORDINATE</label><div class="inputwrap"><input autocomplete="off" id="targetY" inputmode="decimal" placeholder="82.70" step="any" type="number"/><span>Y</span></div></div>
+</div>
+</div>
+<div class="controls"><button class="btn" id="example" type="button"><span aria-hidden="true">↗</span> <span data-i18n="example">EXAMPLE</span></button><button class="btn" id="swap" type="button"><span aria-hidden="true">⇄</span> <span data-i18n="swap">SWAP</span></button><button class="btn clear" id="clear" type="button"><span aria-hidden="true">×</span> <span data-i18n="clear">CLEAR</span></button></div>
+<p class="muted-note" data-i18n="coordsNote">Use decimal grid coordinates from Mark Coordinates in-game. Positive X points east and positive Y points north.</p>
+</div>
+</div>
+<div class="panel">
+<div class="panel-head"><span class="panel-title">02   <span data-i18n="tacticalVector">TACTICAL VECTOR</span></span><span class="small-id" data-i18n="relativeView">RELATIVE VIEW / NOT GAME MAP</span></div>
+<div class="plot"><canvas aria-label="Relative diagram showing the firing position, target and bearing" data-i18n-aria="plotAria" id="plot" role="img"></canvas><div class="plot-caption"><span><b style="color:var(--lime)">●</b> <span data-i18n="gunLabel">GUN</span>   <b style="color:var(--amber)">◆</b> <span data-i18n="targetLabel">TARGET</span></span><span id="delta">ΔX —   ΔY —</span></div></div>
+</div>
+</section>
+<section aria-label="Live firing solution" class="right" data-i18n-aria="rightAria">
+<div class="panel">
+<div class="panel-head"><span class="panel-title">03   <span data-i18n="firingSolution">FIRING SOLUTION</span></span><span class="small-id" id="modeName">L81 / HIGH-ANGLE</span></div>
+<div class="result-top"><span class="status waiting" id="status" role="status">AWAITING COORDINATES</span><span class="solution-hint" data-i18n="autoUpdate">AUTO UPDATES ON INPUT</span></div>
+<div class="resultgrid">
+<div class="readout main"><span class="readoutlabel" data-i18n="elevLabel">ELEVATION / SIGHT</span><div class="reading" id="elevation">—<span class="unit">MIL</span></div><div class="detail" id="elevationDetail">CURRENT WEAPON TABLE</div></div>
+<div class="readout"><span class="readoutlabel" data-i18n="distanceLabel">DISTANCE / RNG</span><div class="reading" id="distance">—<span class="unit">M</span></div><div class="detail" id="distanceDetail">HORIZONTAL DISTANCE</div></div>
+<div class="readout"><span class="readoutlabel" data-i18n="bearingLabel">AZIMUTH / COMPASS</span><div class="reading" id="bearing">—<span class="unit">DEG</span></div><div class="detail" id="bearingDetail">CLOCKWISE FROM NORTH</div></div>
+<div class="readout"><span class="readoutlabel" data-i18n="bearingMilLabel">AZIMUTH / 6400 MIL</span><div class="reading" id="bearingMils">—<span class="unit">MIL</span></div><div class="detail" id="direction">NATO-STYLE COMPASS SCALE</div></div>
+</div>
+<div class="arcbar">
+<div class="arc-heading"><span data-i18n="trajectorySolutions">TRAJECTORY SOLUTIONS</span><span id="arcLabel">L81 / SINGLE ARC</span></div>
+<div class="arc-row">
+<button aria-pressed="false" class="arc" disabled="" id="lowArc" type="button"><span class="arc-title" data-i18n="lowArcLabel">LOW ARC / SPH-2</span><span class="arc-num" id="lowMils">—</span></button>
+<button aria-pressed="true" class="arc" disabled="" id="highArc" type="button"><span class="arc-title" id="highTitle">L81 / SINGLE ARC</span><span class="arc-num" id="highMils">—</span></button>
+</div>
+<div aria-hidden="true" class="meter"><div id="rangeFill"></div></div><div class="meter-legend"><span id="minRange">132 M / MIN</span><span id="maxRange">684 M / MAX</span></div>
+</div>
+<div class="warnings" id="warning">Enter all four coordinates to calculate a firing solution. Data assumes level ground; terrain height is not corrected.</div>
+<div class="actions"><button class="btn primary" disabled="" id="copy" type="button"><span aria-hidden="true">⎘</span> <span data-i18n="copySolution">COPY SOLUTION</span></button><button class="btn" disabled="" id="share" type="button"><span aria-hidden="true">↗</span> <span data-i18n="copyLink">COPY LINK</span></button></div>
+</div>
+<div class="panel">
+<div class="panel-head"><span class="panel-title">04   <span data-i18n="operatingNotes">OPERATING NOTES</span></span><span class="small-id" data-i18n="referenceOnly">REFERENCE ONLY</span></div>
+<div class="information">
+<div class="info-item"><span class="info-title" data-i18n="info1Title">/ / INTERPOLATED MIL</span><p data-i18n="info1">Elevation is interpolated between measured firing-table rows. An out-of-range elevation is never invented.</p></div>
+<div class="info-item"><span class="info-title" data-i18n="info2Title">/ / VERTICAL OFFSET</span><p data-i18n="info2">Distance is horizontal and does not account for terrain height differences. Corrections may be needed in-game.</p></div>
+<div class="info-item"><span class="info-title" data-i18n="info3Title">/ / AXIS REFERENCE</span><p data-i18n="info3">0° = north, 90° = east, 180° = south, 270° = west. Compass MIL uses 6,400 units per turn.</p></div>
+<div class="info-item"><span class="info-title" data-i18n="info4Title">/ / LOCAL &amp; OFFLINE</span><p data-i18n="info4">The calculator runs locally in your browser. Your coordinates are saved only on this device; no account or API is required.</p></div>
+</div>
+</div>
+</section>
+</main>
+<footer><div><div class="footer-brand"><strong>خناثة <span>/ KHANATHA</span></strong> <span>—</span> <span data-i18n="footerUnofficial">UNOFFICIAL WARDOGS COMMUNITY TOOL</span></div><div data-i18n="footerTrademark">Not affiliated with BULKHEAD or Team17.</div></div><div class="footer-author"><span data-i18n="footerMadeBy">CREATED BY</span> <strong>H1SoK4</strong><span class="credit-break">·</span><span data-i18n="tableCredit">FIRING TABLES CREDIT:</span> <a href="https://github.com/apollyon-sys/wardogs-calculator" rel="noopener noreferrer" target="_blank">APOLLYON-SYS (MIT)</a></div></footer>
+</div>
+<div aria-live="polite" class="toast" id="toast" role="status">COPIED TO CLIPBOARD</div>
+<script>
+'use strict';
+/*
+ * Original browser UI/calculation implementation for a game companion.
+ * Firing-table measurements are credited to:
+ * https://github.com/apollyon-sys/wardogs-calculator (MIT, Copyright 2026 Apollyon).
+ * The game developers have not published official firing data.
+ */
+
+const translations={"en":{"brandSubtitle":"WARDOGS FIRE DIRECTION","creatorTop":"CREATED BY","eyebrow":"/ / WARDOGS COMMUNITY TOOL","heroTitle":"KHANATHA.","heroAccent":"Aim. Calculate. Fire.","heroDescription":"A fast WARDOGS mortar and artillery calculator. Enter the firing position and target coordinates for instant distance, compass bearing and elevation in MIL.","madeBy":"DESIGNED & DEVELOPED BY","gridUnit":"1 GRID UNIT = 100 M","weaponSystem":"WEAPON SYSTEM","tacticalVector":"TACTICAL VECTOR","firingSolution":"FIRING SOLUTION","operatingNotes":"OPERATING NOTES","selectPlatform":"SELECT PLATFORM","relativeView":"RELATIVE VIEW / NOT GAME MAP","referenceOnly":"REFERENCE ONLY","mortar81":"81MM / MORTAR","artillery155":"155MM / ARTILLERY","effectiveRange":"EFFECTIVE TABLE RANGE","firingPosition":"FIRING POSITION","gunSuffix":"/ GUN","targetPosition":"TARGET POSITION","impactSuffix":"/ IMPACT","coordX":"X COORDINATE","coordY":"Y COORDINATE","example":"EXAMPLE","swap":"SWAP","clear":"CLEAR","copySolution":"COPY SOLUTION","copyLink":"COPY LINK","coordsNote":"Use decimal grid coordinates from Mark Coordinates in-game. Positive X points east and positive Y points north.","gunLabel":"GUN","targetLabel":"TARGET","autoUpdate":"AUTO UPDATES ON INPUT","elevLabel":"ELEVATION / SIGHT","distanceLabel":"DISTANCE / RANGE","bearingLabel":"AZIMUTH / COMPASS","bearingMilLabel":"AZIMUTH / 6400 MIL","trajectorySolutions":"TRAJECTORY SOLUTIONS","lowArcLabel":"LOW ARC / SPH-2","info1Title":"/ / INTERPOLATED MIL","info2Title":"/ / VERTICAL OFFSET","info3Title":"/ / AXIS REFERENCE","info4Title":"/ / LOCAL & OFFLINE","info1":"Elevation is interpolated between measured firing-table rows. An out-of-range elevation is never invented.","info2":"Distance is horizontal and does not account for terrain height differences. Corrections may be needed in-game.","info3":"0° = north, 90° = east, 180° = south, 270° = west. Compass MIL uses 6,400 units per turn.","info4":"The calculator runs locally in your browser. Your coordinates are saved only on this device; no account or API is required.","footerUnofficial":"UNOFFICIAL WARDOGS COMMUNITY TOOL","footerTrademark":"Not affiliated with BULKHEAD or Team17.","footerMadeBy":"CREATED BY","tableCredit":"FIRING TABLES CREDIT:","plotAria":"Relative diagram showing the gun position, target and bearing","leftAria":"Coordinates and weapon configuration","rightAria":"Live firing results","weaponAria":"Weapon","singleArc":"SINGLE ARC","selectArc":"SELECT ARC","highArc":"HIGH ARC","lowArc":"LOW ARC","highAngle":"HIGH-ANGLE","waiting":"AWAITING COORDINATES","ready":"SOLUTION READY","outOfRange":"OUTSIDE FIRING TABLE","missing":"Enter all four coordinates to calculate a firing solution. The table assumes level ground and does not correct elevation changes.","invalid":"Check that every coordinate contains a valid number.","directionScale":"NATO-STYLE COMPASS SCALE","bearingFromNorth":"CLOCKWISE FROM NORTH","horizontal":"HORIZONTAL","elevation":"ELEVATION","noSetting":"NO VALID FIRE SETTING","min":"MIN","max":"MAX","l81Warning":"For the L81, a smaller elevation MIL generally corresponds to a longer distance. Flat-ground table only; confirm the setting in-game.","sphWarning":"SPH-2 {arc} trajectory selected. Keep the vehicle level; flat-ground table only. Confirm the setting in-game.","tooClose":"The target is {distance} m closer than the table minimum.","tooFar":"The target is {distance} m beyond the table maximum.","noArc":"No measured setting exists for the selected trajectory.","outWarning":"NO VALID ELEVATION: {reason} Change the weapon or target. The calculator does not invent out-of-range values.","copied":"COPIED TO CLIPBOARD","copyFailed":"COPY FAILED — USE HTTPS","exampleLoaded":"EXAMPLE COORDINATES LOADED","plotTarget":"TARGET","plotGun":"GUN","plotRings":"RINGS","copyTextTitle":"KHANATHA / WARDOGS FIRING SOLUTION","copyTextWeapon":"Weapon","copyTextGun":"Gun","copyTextTarget":"Target","copyTextDistance":"Distance","copyTextBearing":"Bearing","copyTextArc":"Arc","copyTextElevation":"Elevation","copyTextNote":"Note: Table assumes level ground; height difference is not corrected."},"ar":{"brandSubtitle":"حاسبة قاذفات WARDOGS","creatorTop":"صنع بواسطة","eyebrow":"/ / أداة مجتمع لاعبي WARDOGS","heroTitle":"خناثة.","heroAccent":"حدد الهدف. احسب. اضرب.","heroDescription":"حاسبة قاذفات المورتر والمدفعية للعبة WARDOGS. أدخل إحداثيات القاذفة والهدف حتى تحصل فوراً على المسافة والاتجاه وزاوية الارتفاع بوحدة MIL.","madeBy":"تصميم وتطوير","gridUnit":"كل وحدة على الخريطة = 100 متر","weaponSystem":"اختيار السلاح","tacticalVector":"مخطط الاتجاه","firingSolution":"نتيجة الحساب","operatingNotes":"ملاحظات مهمة","selectPlatform":"حدد نوع القاذفة","relativeView":"مخطط نسبي / مو خريطة اللعبة","referenceOnly":"للاستخدام داخل اللعبة","mortar81":"مورتر / 81 ملم","artillery155":"مدفعية / 155 ملم","effectiveRange":"المدى المتوفر بجدول الحساب","firingPosition":"موقع القاذفة","gunSuffix":"/ الإطلاق","targetPosition":"موقع الهدف","impactSuffix":"/ الإصابة","coordX":"إحداثي X","coordY":"إحداثي Y","example":"مثال","swap":"تبديل المواقع","clear":"مسح","copySolution":"نسخ النتيجة","copyLink":"نسخ الرابط","coordsNote":"استخدم إحداثيات الخريطة العشرية من خيار Mark Coordinates باللعبة. اتجاه X الموجب شرق، وY الموجب شمال.","gunLabel":"القاذفة","targetLabel":"الهدف","autoUpdate":"النتيجة تتحدث تلقائياً","elevLabel":"زاوية الارتفاع / التسديد","distanceLabel":"المسافة إلى الهدف","bearingLabel":"الاتجاه / البوصلة","bearingMilLabel":"الاتجاه / 6400 MIL","trajectorySolutions":"خيارات مسار القذيفة","lowArcLabel":"المسار المنخفض / SPH-2","info1Title":"/ / حساب زاوية MIL","info2Title":"/ / فرق الارتفاع","info3Title":"/ / اتجاهات البوصلة","info4Title":"/ / يعمل بدون إنترنت","info1":"يتم حساب زاوية الارتفاع بالاستيفاء بين قياسات جدول إطلاق اللعبة. إذا الهدف خارج مدى الجدول ما راح تظهر قيمة مخمّنة.","info2":"المسافة محسوبة بشكل أفقي، وما تشمل فرق ارتفاع التضاريس بين القاذفة والهدف. قد تحتاج تصحيح داخل اللعبة.","info3":"0° يعني شمال، 90° شرق، 180° جنوب، 270° غرب. مقياس اتجاه MIL يحتوي على 6400 وحدة للدورة الكاملة.","info4":"كل الحسابات تصير داخل المتصفح. الإحداثيات تنحفظ على نفس جهازك فقط، وبدون تسجيل دخول أو API.","footerUnofficial":"أداة غير رسمية لمجتمع لاعبي WARDOGS","footerTrademark":"لا ترتبط رسمياً بشركتي BULKHEAD أو Team17.","footerMadeBy":"صنع بواسطة","tableCredit":"مصدر جداول الإطلاق:","plotAria":"مخطط نسبي يوضح موقع القاذفة والهدف والاتجاه","leftAria":"إحداثيات القاذفة وإعدادات السلاح","rightAria":"نتيجة الحساب المباشرة","weaponAria":"السلاح","singleArc":"مسار واحد","selectArc":"اختيار المسار","highArc":"مسار مرتفع","lowArc":"مسار منخفض","highAngle":"زاوية مرتفعة","waiting":"بانتظار الإحداثيات","ready":"الحساب جاهز","outOfRange":"الهدف خارج مدى الجدول","missing":"أدخل الإحداثيات الأربعة حتى تظهر النتيجة. الجدول يفترض تساوي الارتفاع ولا يصحّح فرق التضاريس.","invalid":"تأكد من إدخال أرقام صحيحة بكل خانات الإحداثيات.","directionScale":"مقياس البوصلة 6400 MIL","bearingFromNorth":"يُقاس باتجاه عقارب الساعة من الشمال","horizontal":"مسافة أفقية","elevation":"زاوية الارتفاع","noSetting":"ماكو زاوية صالحة بهذا المدى","min":"الأدنى","max":"الأقصى","l81Warning":"بقاذفة L81، كلما تقل زاوية MIL غالباً تزيد المسافة. الجدول يفترض أرض مستوية؛ تأكد من النتيجة داخل اللعبة.","sphWarning":"تم اختيار {arc} لمدفع SPH-2. خلّي المركبة بمستوى مستقيم؛ الجدول يفترض أرض مستوية. تأكد من النتيجة داخل اللعبة.","tooClose":"الهدف أقرب من أقل مدى بالجدول بمقدار {distance} متر.","tooFar":"الهدف أبعد من أقصى مدى بالجدول بمقدار {distance} متر.","noArc":"ماكو نتيجة مقاسة للمسار المحدد.","outWarning":"ماكو زاوية ارتفاع صالحة: {reason} جرّب تبدّل السلاح أو موقع الهدف. ما نعرض قيمة تخمينية خارج الجدول.","copied":"تم النسخ","copyFailed":"فشل النسخ — استخدم HTTPS","exampleLoaded":"تم تحميل إحداثيات المثال","plotTarget":"الهدف","plotGun":"القاذفة","plotRings":"دوائر المدى","copyTextTitle":"خناثة / حاسبة WARDOGS","copyTextWeapon":"السلاح","copyTextGun":"القاذفة","copyTextTarget":"الهدف","copyTextDistance":"المسافة","copyTextBearing":"الاتجاه","copyTextArc":"المسار","copyTextElevation":"زاوية الارتفاع","copyTextNote":"ملاحظة: الجدول يفترض أرض مستوية ولا يصحّح فرق الارتفاع."}};
+let currentLang='ar';
+function t(key,params){let value=translations[currentLang][key]||translations.en[key]||key;if(params)for(const [k,v] of Object.entries(params))value=value.replaceAll('{'+k+'}',String(v));return value;}
+function arcText(arc){return t(arc==='low'?'lowArc':'highArc');}
+function weaponMode(){return currentWeapon==='l81'?'L81 / '+t('highAngle'):'SPH-2 / '+arcText(selectedArc);}
+function renderLanguage(){
+ document.documentElement.lang=currentLang;document.documentElement.dir=currentLang==='ar'?'rtl':'ltr';
+ document.title=currentLang==='ar'?'خناثة | حاسبة مورتر WARDOGS — H1SoK4':'KHANATHA | WARDOGS Mortar Calculator — H1SoK4';
+ document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n);});
+ document.querySelectorAll('[data-i18n-aria]').forEach(el=>{el.setAttribute('aria-label',t(el.dataset.i18nAria));});
+ document.getElementById('langAr').setAttribute('aria-pressed',String(currentLang==='ar'));
+ document.getElementById('langEn').setAttribute('aria-pressed',String(currentLang==='en'));
+ compute();
+}
+function setLanguage(lang){currentLang=lang==='en'?'en':'ar';try{localStorage.setItem('khanatha-lang',currentLang);}catch{}renderLanguage();}
+function restoreLanguage(){try{const saved=localStorage.getItem('khanatha-lang');if(saved==='en'||saved==='ar')return saved;}catch{}return 'ar';}
+
+const distL81=[132,140,151,163,175,187,198,208,219,229,239,250,260,270,280,290,300,310,319,329,339,348,358,367,376,385,394,403,412,420,429,437,446,454,462,470,478,486,494,501,509,516,524,531,538,545,552,559,565,572,578,585,591,597,603,609,615,620,626,631,636,641,646,651,656,661,666,670,675,680,684];
+const distSPHLow=[1181,1232,1283,1334,1384,1433,1482,1529,1576,1622,1666,1709,1751,1792,1832,1870,1907,1944,1979,2014,2046,2079,2110,2139,2168,2196,2223,2249,2273,2296,2319,2341,2362,2383,2403,2422,2439,2456,2471,2485,2499,2513,2526,2538,2550,2561,2570,2579,2586,2593,2599,2605,2610,2615,2620,2623,2626,2628,2629];
+// Last 610/620 MIL rows in the source both correspond to 2629 m; use 620 at that plateau.
+const distSPHHigh=[780,825,869,913,956,999,1041,1083,1124,1165,1205,1245,1285,1324,1363,1401,1438,1475,1512,1547,1582,1616,1650,1684,1717,1750,1782,1813,1844,1875,1905,1934,1963,1991,2019,2046,2072,2098,2123,2147,2171,2194,2217,2239,2261,2282,2303,2323,2342,2360,2378,2395,2412,2429,2444,2460,2474,2488,2501,2513,2524,2536,2546,2557,2567,2576,2584,2592,2599,2604,2609,2613,2617,2621,2624,2626,2628,2629];
+const tables={
+ l81:{name:'L81',min:132,max:684,arcs:{high:distL81.map((d,i)=>[d,850-i*10])}},
+ sph:{name:'SPH-2',min:780,max:2629,arcs:{low:distSPHLow.map((d,i)=>[d,20+i*10]),high:distSPHHigh.map((d,i)=>[d,1390-i*10])}}
+};
+const $=id=>document.getElementById(id);
+const ids=['gunX','gunY','targetX','targetY'];
+let currentWeapon='l81',selectedArc='high',latest=null,toastTimer=null;
+function interpolate(table,d){
+ if(!Number.isFinite(d)||!table?.length||d<table[0][0]-1e-8||d>table.at(-1)[0]+1e-8) return null;
+ if(d<=table[0][0])return table[0][1];
+ for(let i=1;i<table.length;i++){
+  const [d2,m2]=table[i],[d1,m1]=table[i-1];
+  if(d<=d2){if(d2===d1)return m2;return m1+(d-d1)*(m2-m1)/(d2-d1);}
+ }
+ return table.at(-1)[1];
+}
+const num=(n,d=0)=>Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+function val(id){const e=$(id);return e.value.trim()===''?null:Number(e.value);}
+function readCoords(){const values=ids.map(val);return values.every(v=>v!==null&&Number.isFinite(v))?values:null;}
+function azimuthName(degrees){const dirs=['N','NE','E','SE','S','SW','W','NW'];return dirs[Math.round(degrees/45)%8];}
+function setReadout(id,value,unit){$(id).innerHTML=`${value}<span class="unit">${unit}</span>`;}
+function compute(){
+ const coords=readCoords(),weapon=tables[currentWeapon];
+ latest=null;
+ $('weaponL81').setAttribute('aria-pressed',String(currentWeapon==='l81'));
+ $('weaponSPH').setAttribute('aria-pressed',String(currentWeapon==='sph'));
+ $('rangeText').textContent=`${num(weapon.min)}–${num(weapon.max)} M`;
+ $('minRange').textContent=`${num(weapon.min)} M / ${t('min')}`;
+ $('maxRange').textContent=`${num(weapon.max)} M / ${t('max')}`;
+ $('highTitle').textContent=currentWeapon==='l81'?`L81 / ${t('singleArc')}`:`SPH-2 / ${t('highArc')}`;
+ $('arcLabel').textContent=currentWeapon==='l81'?`L81 / ${t('singleArc')}`:`SPH-2 / ${t('selectArc')}`;
+ $('modeName').textContent=weaponMode();
+ $('status').className='status waiting';$('status').textContent=t('waiting');
+ $('warning').className='warnings';
+ const missing=ids.filter(id=>$(id).value.trim()==='').length;
+ $('warning').textContent=t(missing?'missing':'invalid');
+ setReadout('elevation','—','MIL');setReadout('distance','—','M');setReadout('bearing','—','DEG');setReadout('bearingMils','—','MIL');
+ $('elevationDetail').textContent=t('elevation');
+ $('distanceDetail').textContent=t('horizontal');
+ $('bearingDetail').textContent=t('bearingFromNorth');
+ $('lowMils').textContent='—';$('highMils').textContent='—';$('lowArc').disabled=true;$('highArc').disabled=true;
+ $('lowArc').setAttribute('aria-pressed','false');$('highArc').setAttribute('aria-pressed',String(selectedArc==='high'));
+ $('rangeFill').style.width='0%';$('copy').disabled=true;$('share').disabled=true;
+ $('direction').textContent=t('directionScale');$('delta').textContent='ΔX —   ΔY —';
+ if(!coords){drawPlot(null);return;}
+ const [gx,gy,tx,ty]=coords,dx=tx-gx,dy=ty-gy;
+ const distance=Math.hypot(dx,dy)*100;
+ const bearing=(Math.atan2(dx,dy)*180/Math.PI+360)%360;
+ const bmil=bearing*6400/360;
+ const high=interpolate(weapon.arcs.high,distance),low=weapon.arcs.low?interpolate(weapon.arcs.low,distance):null;
+ const isInRange=distance>=weapon.min&&distance<=weapon.max;
+ if(currentWeapon==='sph'&&selectedArc==='low'&&low===null&&high!==null)selectedArc='high';
+ const angle=selectedArc==='low'?low:high;
+ const usable=isInRange&&angle!==null;
+ latest={gx,gy,tx,ty,dx,dy,distance,bearing,bmil,high,low,angle,usable};
+ setReadout('distance',num(Math.round(distance)),'M');
+ $('distanceDetail').textContent=`${num(distance/1000,3)} KM / ${t('horizontal')}`;
+ setReadout('bearing',num(bearing,1)+'°','');
+ $('bearingDetail').textContent=`${azimuthName(bearing)} / ${t('bearingFromNorth')}`;
+ setReadout('bearingMils',num(Math.round(bmil)),'MIL');
+ $('direction').textContent='6400 MIL = 360°';
+ $('delta').textContent=`ΔX ${dx>=0?'+':''}${num(dx,2)}  ·  ΔY ${dy>=0?'+':''}${num(dy,2)}`;
+ $('lowMils').textContent=low===null?'—':`${num(Math.round(low))} MIL`;
+ $('highMils').textContent=high===null?'—':`${num(Math.round(high))} MIL`;
+ $('lowArc').disabled=low===null;$('highArc').disabled=high===null;
+ $('lowArc').setAttribute('aria-pressed',String(selectedArc==='low'&&low!==null));
+ $('highArc').setAttribute('aria-pressed',String(selectedArc==='high'&&high!==null));
+ $('modeName').textContent=weaponMode();
+ $('rangeFill').style.width=`${Math.min(100,Math.max(0,distance/weapon.max*100))}%`;
+ $('copy').disabled=false;$('share').disabled=false;
+ if(usable){
+  $('status').textContent=t('ready');$('status').className='status';
+  setReadout('elevation',num(Math.round(angle)),'MIL');
+  $('elevationDetail').textContent=currentWeapon==='sph'?`${arcText(selectedArc)} / ${t('elevation')}`:`L81 / ${t('elevation')}`;
+  $('warning').textContent=currentWeapon==='l81'?t('l81Warning'):t('sphWarning',{arc:arcText(selectedArc)});
+ } else {
+  $('status').textContent=t('outOfRange');$('status').className='status invalid';
+  $('warning').className='warnings error';
+  const reason=distance<weapon.min?t('tooClose',{distance:num(Math.round(weapon.min-distance))}):distance>weapon.max?t('tooFar',{distance:num(Math.round(distance-weapon.max))}):t('noArc');
+  $('warning').textContent=t('outWarning',{reason});
+  $('elevationDetail').textContent=t('noSetting');
+ }
+ drawPlot(latest);
+ saveState();
+}
+function setWeapon(which){currentWeapon=which;selectedArc='high';compute();saveState();}
+function saveState(){try{localStorage.setItem('wardogs-idf-v1',JSON.stringify({weapon:currentWeapon,arc:selectedArc,values:ids.map(id=>$(id).value)}));}catch{}}
+function restoreState(){try{const saved=JSON.parse(localStorage.getItem('wardogs-idf-v1'));if(saved&&saved.values?.length===4){saved.values.forEach((v,i)=>$(ids[i]).value=String(v));currentWeapon=saved.weapon==='sph'?'sph':'l81';selectedArc=saved.arc==='low'?'low':'high';}}catch{}}
+function showToast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2300);}
+async function copyText(text){try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);}else{const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();if(!ok)throw new Error('Copy unavailable');}showToast(t('copied'));}catch{showToast(t('copyFailed'));}}
+function drawPlot(data){
+ const canvas=$('plot'),rect=canvas.getBoundingClientRect(),w=Math.max(260,Math.round(rect.width)),h=Math.max(230,Math.round(rect.height)),dpr=Math.min(2,window.devicePixelRatio||1);
+ canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
+ const c=canvas.getContext('2d');c.scale(dpr,dpr);c.clearRect(0,0,w,h);
+ c.fillStyle='#101913';c.fillRect(0,0,w,h);
+ // Tactical grid is relative to the gun, not a rendered game map.
+ const cx=w/2,cy=h/2,limit=Math.max(tables[currentWeapon].max*1.1,data?.distance*1.2||0,300),scale=Math.min(w,h)*.42/limit;
+ const gridMeters=currentWeapon==='l81'?100:400,step=gridMeters*scale;
+ c.save();c.strokeStyle='#273a2b';c.lineWidth=.7;
+ for(let i=-Math.ceil(w/(2*step));i<=Math.ceil(w/(2*step));i++){const x=cx+i*step;c.beginPath();c.moveTo(x,0);c.lineTo(x,h);c.stroke();}
+ for(let i=-Math.ceil(h/(2*step));i<=Math.ceil(h/(2*step));i++){const y=cy+i*step;c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke();}
+ c.restore();
+ const rings=currentWeapon==='l81'?[200,400,684]:[780,1600,2629];
+ rings.forEach((m,i)=>{const r=m*scale;c.beginPath();c.arc(cx,cy,r,0,Math.PI*2);c.strokeStyle=i===2?'#4b6043':'#304b35';c.lineWidth=i===2?1.2:.85;c.setLineDash(i===2?[5,6]:[3,7]);c.stroke();c.setLineDash([]);});
+ c.strokeStyle='#4d7254';c.setLineDash([5,7]);c.beginPath();c.moveTo(cx,0);c.lineTo(cx,h);c.moveTo(0,cy);c.lineTo(w,cy);c.stroke();c.setLineDash([]);
+ c.font='700 11px ui-monospace,monospace';c.textAlign='center';c.fillStyle='#a4bea2';c.fillText('N',cx,14);c.fillText('S',cx,h-8);c.textAlign='left';c.fillText('E',w-14,cy-9);c.fillText('W',7,cy-9);
+ if(data){
+  const x=cx+data.dx*100*scale,y=cy-data.dy*100*scale;
+  c.strokeStyle='#d4f580';c.lineWidth=2;c.beginPath();c.moveTo(cx,cy);c.lineTo(x,y);c.stroke();
+  c.fillStyle='#d5fb8033';c.beginPath();c.arc(x,y,13,0,Math.PI*2);c.fill();
+  c.save();c.translate(x,y);c.rotate(Math.PI/4);c.fillStyle='#ffd079';c.strokeStyle='#ffcf79';c.lineWidth=2;c.strokeRect(-6,-6,12,12);c.fillRect(-3,-3,6,6);c.restore();
+  c.fillStyle='#f7d899';c.font='bold 11px ui-monospace,monospace';c.textAlign=x<w-96?'left':'right';c.fillText(t('plotTarget'),x+(x<w-96?14:-14),y-13);
+  c.fillStyle='#cce5be';c.textAlign='right';c.font='11px ui-monospace,monospace';c.fillText(`${num(Math.round(data.distance))} M`,w-12,h-13);
+ }
+ c.fillStyle='#d5fb80';c.strokeStyle='#111a10';c.lineWidth=2;c.beginPath();c.arc(cx,cy,6.5,0,Math.PI*2);c.fill();c.stroke();
+ c.fillStyle='#cfe2bb';c.font='bold 11px ui-monospace,monospace';c.textAlign='left';c.fillText(t('plotGun'),cx+12,cy+17);
+ c.textAlign='left';c.fillStyle='#7c9780';c.font='10px ui-monospace,monospace';c.fillText(`${t('plotRings')}: ${rings.join(' / ')} M`,12,18);
+}
+$('weaponL81').addEventListener('click',()=>setWeapon('l81'));
+$('weaponSPH').addEventListener('click',()=>setWeapon('sph'));
+ids.forEach(id=>$(id).addEventListener('input',()=>{compute();saveState();}));
+$('lowArc').addEventListener('click',()=>{selectedArc='low';compute();});
+$('highArc').addEventListener('click',()=>{selectedArc='high';compute();});
+$('example').addEventListener('click',()=>{const values=currentWeapon==='l81'?[80,80,83.6,82.7]:[80,80,93.5,89];values.forEach((v,i)=>$(ids[i]).value=v);compute();showToast(t('exampleLoaded'));});
+$('swap').addEventListener('click',()=>{for(const [a,b] of [['gunX','targetX'],['gunY','targetY']]){const temp=$(a).value;$(a).value=$(b).value;$(b).value=temp;}compute();});
+$('clear').addEventListener('click',()=>{ids.forEach(id=>$(id).value='');compute();saveState();$('gunX').focus();});
+$('copy').addEventListener('click',()=>{
+ if(!latest)return;
+ const l=latest,setting=l.usable?`${num(Math.round(l.angle))} MIL`:t('outOfRange');
+ copyText(`${t('copyTextTitle')}\n${t('copyTextWeapon')}: ${tables[currentWeapon].name}\n${t('copyTextGun')}: X ${l.gx}, Y ${l.gy}\n${t('copyTextTarget')}: X ${l.tx}, Y ${l.ty}\n${t('copyTextDistance')}: ${num(l.distance,1)} M\n${t('copyTextBearing')}: ${num(l.bearing,1)}° / ${num(Math.round(l.bmil))} MIL\n${t('copyTextArc')}: ${currentWeapon==='l81'?'L81':arcText(selectedArc)}\n${t('copyTextElevation')}: ${setting}\n${t('copyTextNote')}`);
+});
+$('share').addEventListener('click',()=>{const p=new URLSearchParams();p.set('w',currentWeapon);p.set('arc',selectedArc);p.set('lang',currentLang);ids.forEach(id=>p.set(id,$(id).value));copyText(`${window.location.href.split(/[?#]/)[0]}?${p.toString()}`);});
+function loadQuery(){const p=new URLSearchParams(location.search);if(!p.has('gunX'))return;currentWeapon=p.get('w')==='sph'?'sph':'l81';selectedArc=p.get('arc')==='low'?'low':'high';ids.forEach(id=>{const n=p.get(id);if(n!==null&&n.trim()!==''&&Number.isFinite(Number(n)))$(id).value=n;});}
+$('langAr').addEventListener('click',()=>setLanguage('ar'));
+$('langEn').addEventListener('click',()=>setLanguage('en'));
+window.addEventListener('resize',()=>drawPlot(latest));
+restoreState();loadQuery();
+const queryLang=new URLSearchParams(location.search).get('lang');
+currentLang=queryLang==='en'||queryLang==='ar'?queryLang:restoreLanguage();
+renderLanguage();
+</script>
+<!--
+Third-party community firing table data: https://github.com/apollyon-sys/wardogs-calculator
+MIT License
+
+Copyright (c) 2026 Apollyon
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+-->
+</body>
+</html>
